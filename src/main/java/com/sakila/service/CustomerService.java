@@ -78,6 +78,12 @@ public class CustomerService {
     @Transactional
     public CustomerFindByIdResponse update(CustomerUpdateRequest request) {
         CustomerEntity entity = customerRepository.findById(request.getCustomerId()).orElseThrow();
+        entity.setStoreId(request.getStoreId());
+        entity.setFirstName(request.getFirstName());
+        entity.setLastName(request.getLastName());
+        entity.setEmail(request.getEmail());
+        entity.setAddressId(request.getAddressId());
+        entity.setActive(request.getActive());
         CustomerDto dto = fillData(customerRepository.save(entity));
         return CustomerFindByIdResponse.builder()
                 .customerDto(dto)
