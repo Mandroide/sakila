@@ -31,4 +31,9 @@ public class GlobalExceptionHandler {
     public ResponseEntity<DefaultAPIError> handleException(Exception ex) {
         return ExceptionAdviserHandler.createResponse(ex.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
     }
+
+    @ExceptionHandler(BadRequestException.class)
+    public ResponseEntity<DefaultAPIError> handleException(BadRequestException ex) {
+        return ExceptionAdviserHandler.createResponse(ex.getMessage(), HttpStatus.BAD_REQUEST);
+    }
 }
