@@ -51,7 +51,8 @@ class CustomerControllerIntegrationTest extends AbstractIntegrationTest {
         Assertions.assertNotNull(body);
         CustomerDto dto = body.getCustomerDto();
         assertThat(dto.getCustomerId()).isNotNull();
-        assertThat(dto).usingRecursiveComparison().ignoringCollectionOrder().ignoringFields("customerId", "addressDto", "createDate").isEqualTo(expectedResponse.getCustomerDto());
+        assertThat(dto.getActive()).isTrue();
+        assertThat(dto).usingRecursiveComparison().ignoringCollectionOrder().ignoringFields("customerId", "addressDto", "createDate", "active").isEqualTo(expectedResponse.getCustomerDto());
         customerId = dto.getCustomerId();
     }
 
@@ -75,6 +76,7 @@ class CustomerControllerIntegrationTest extends AbstractIntegrationTest {
         String lastName = "Test last name update";
         String email = "testupdated@example.com";
         Integer addressId = 1;
+        Boolean active = false;
         CustomerUpdateRequest request = CustomerUpdateRequest.builder()
                 .customerId(customerId)
                 .storeId(storeId)
@@ -82,7 +84,7 @@ class CustomerControllerIntegrationTest extends AbstractIntegrationTest {
                 .lastName(lastName)
                 .email(email)
                 .addressId(addressId)
-                .active(true)
+                .active(active)
                 .build();
         HttpEntity<CustomerUpdateRequest> httpEntity = new HttpEntity<>(request);
 
@@ -95,8 +97,8 @@ class CustomerControllerIntegrationTest extends AbstractIntegrationTest {
                         .firstName(firstName)
                         .lastName(lastName)
                         .email(email)
+                        .active(active)
                         .addressDto(null)
-                        .active(true)
                         .build())
                 .build();
         CustomerFindByIdResponse body = responseEntity.getBody();
